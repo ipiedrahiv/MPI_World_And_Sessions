@@ -1,19 +1,28 @@
 #include <mpi.h>
 #include <stdio.h>
 
-static MPI_Session lib_shandle = MPI_SESSION_NULL;
 
 int main(int argc, char *argv[]){
-	const char mt_key[] = "thread_level";
-	const char mt_value[] = "MPI_THREAD_MULTIPLE";
-
+	MPI_Session lib_shandle = MPI_SESSION_NULL;
+	MPI_Comm lib_comm = MPI_COMM_NULL;
+	
 	MPI_Info sinfo = MPI_INFO_NULL;
 	MPI_Info_create(&sinfo);
-	MPI_Info_set(sinfo ,mt_key, mt_value);
 
-	int rc = MPI_Session_init(sinfo, MPI_ERRORS_RETURN, &lib_shandle);
-		
-	printf("rc = %d\n", rc);
+	int rc = MPI_Session_init(MPI_INFO_NULL, MPI_ERRORS_RETURN, &lib_shandle);
+
+	MPI_Group wgroup = MPI_GROUP_NULL;
+	const char pset_name[] = "mpi://WORLD";
+
+	rc = MPI_Group_from_session_pset(lib_shandle, pset_name, &wgroup);
+	rc = MPI_Comm_create_from_group(wgroup, "example", MPI_INFO_NULL, MPI_ERRORS_RETURN, &lib_comm);	
+	
+	int rank, size;
+	MPI_Comm_rank(wgroup, &rank);
+	MPI_Comm_size(wgroup, &size);
+	printf("Rank %d out of %d\n", rank, size);
+	
+	MPI_Group_free(&wgroup);
 
 	MPI_Session_finalize(&lib_shandle);
 
