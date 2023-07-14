@@ -15,16 +15,18 @@ int main(int argc, char *argv[]){
 	const char pset_name[] = "mpi://WORLD";
 
 	rc = MPI_Group_from_session_pset(lib_shandle, pset_name, &wgroup);
-	rc = MPI_Comm_create_from_group(wgroup, "example", MPI_INFO_NULL, MPI_ERRORS_RETURN, &lib_comm);	
-	
-	int rank, size;
-	MPI_Comm_rank(wgroup, &rank);
-	MPI_Comm_size(wgroup, &size);
-	printf("Rank %d out of %d\n", rank, size);
-	
+	rc = MPI_Comm_create_from_group(wgroup, "example.example", MPI_INFO_NULL, MPI_ERRORS_RETURN, &lib_comm);	
+	if (rc == MPI_SUCCESS){	
+		int rank, size;
+		MPI_Comm_rank(lib_comm, &rank);
+		MPI_Comm_size(lib_comm, &size);
+		printf("Rank %d out of %d\n", rank, size);
+	}	
+
 	MPI_Group_free(&wgroup);
 
 	MPI_Session_finalize(&lib_shandle);
+	
 
 	return(0);
 }
