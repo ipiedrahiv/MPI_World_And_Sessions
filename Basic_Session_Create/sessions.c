@@ -3,16 +3,15 @@
 
 
 int main(int argc, char *argv[]){
-	MPI_Session lib_shandle = MPI_SESSION_NULL;
+	// MPI handle for the session
+	MPI_Session session = MPI_SESSION_NULL;
 	
-	MPI_Info sinfo = MPI_INFO_NULL;
-	MPI_Info_create(&sinfo);
-
-	int rc = MPI_Session_init(MPI_INFO_NULL, MPI_ERRORS_RETURN, &lib_shandle);
+	// Initialize session
+	int rc = MPI_Session_init(MPI_INFO_NULL, MPI_ERRORS_RETURN, &session);
 		
 	printf("rc = %d\n", rc);
 
-	MPI_Session_finalize(&lib_shandle);
+	MPI_Session_finalize(&session);
 
 	return(0);
 }
