@@ -1,1 +1,2 @@
 *.out
+MPI_Examples/build/*
