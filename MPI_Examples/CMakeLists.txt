@@ -16,4 +16,4 @@ endfunction()
 add_subdirectory(MinWorkingExample)
 add_subdirectory(PingPongExample)
 add_subdirectory(ProcToProcCommExample)
-
+add_subdirectory(MalleableExample)
